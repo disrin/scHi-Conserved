@@ -19,13 +19,13 @@ import os
 import glob
 
 def process_and_save_bottom_1_percent(file_path, output_dir):
-    # Load the distance matrix from the file
+    # Load the distance matrix
     matrix = np.loadtxt(file_path)
     
-    # Flatten the matrix to work with it as a 1D array
+    # Flatten the matrix to 1D array
     flat_matrix = matrix.flatten()
     
-    # Find the threshold value for the bottom 1%
+    # Find threshold value for bottom 1%
     # Use numpy's percentile function. Exclude zeros by filtering them out
     nonzero_flat_matrix = flat_matrix[flat_matrix > 0]
     if len(nonzero_flat_matrix) == 0:
@@ -34,26 +34,25 @@ def process_and_save_bottom_1_percent(file_path, output_dir):
     
     bottom_1_percent_threshold = np.percentile(nonzero_flat_matrix, 1)
     
-    # Set all values above the bottom 1% threshold to zero
-    # Operate on the original matrix for this
+    # Set all values above the bottom 1% to zero
     modified_matrix = np.where(matrix <= bottom_1_percent_threshold, matrix, 0)
     
-    # Prepare the output file path
+    # output file path
     file_name = os.path.basename(file_path)
     output_file_path = os.path.join(output_dir, f"bottom1p_{file_name}")
     
-    # Save the modified matrix to the new file
+    # Save modified matrix to new file
     np.savetxt(output_file_path, modified_matrix, fmt='%f')
     print(f"Processed and saved bottom 1% matrix to {output_file_path}")
 
-# Specify the directory containing the distance matrix files and the output directory
+# Specify directory containing distance matrix files and the output directory
 input_dir = 'path/to/input/files'
 output_dir = 'path/to/output/files'
 
-# Create the output directory if it doesn't exist
+# Create the output directory
 os.makedirs(output_dir, exist_ok=True)
 
-# Process each file in the input directory
+# Process each file in input directory
 for file_path in glob.glob(os.path.join(input_dir, '*.txt')):
     process_and_save_bottom_1_percent(file_path, output_dir)
 
