@@ -1,19 +1,17 @@
 """
-This script is designed to process distance matrix files, specifically focusing on identifying and isolating the bottom 1% of distance values within each matrix. The 
-primary aim is to highlight the shortest distances, presuming they represent significant interactions or relationships in the context of the data. This process can be 
-particularly useful in fields such as genomics or network analysis, where understanding close interactions is crucial.
+This script is designed to process distance matrix files, specifically focusing on identifying and isolating the bottom 1% of distance values within each matrix. The aim is to highlight the genomic bins that are in closest proximity in 3D space.
 
 The code performs the following steps for each distance matrix file in the specified input directory:
 1. Loads the distance matrix from a text file into a NumPy array.
 2. Flattens the matrix to a 1D array to simplify the calculation of percentile values.
-3. Filters out zero values to exclude them from percentile calculations, under the assumption that zero distances are either non-data or represent a lack of interaction.
-4. Determines the threshold value for the bottom 1% of distances, using NumPy's percentile function on the non-zero values.
-5. Creates a modified version of the original matrix, where all values above this bottom 1% threshold are set to zero, effectively focusing the matrix on the shortest 
+3. Filters out zero values to exclude them from percentile calculations, assuming that zero distances represent a lack of interaction.
+4. Determines the bottom 1% threshold of distances, using NumPy's percentile function.
+5. Creates a modified matrix, where all values above threshold are set to zero, thereby keeping the shortest 
 distances only.
 6. Saves this modified matrix to a new file in the specified output directory, prefixing the filename with 'bottom1p_' to denote its processed status.
 
 To use this script, adjust the 'input_dir' to point to your directory containing the original distance matrix files and set 'output_dir' to where you'd like the processed 
-files to be saved. The script will automatically create the output directory if it doesn't already exist.
+files to be saved. It will create the output directory if it doesn't already exist.
 """
 
 import numpy as np
